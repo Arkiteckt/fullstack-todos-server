@@ -13,6 +13,7 @@ async function mongoConnect() {
 		database = await client.db(process.env.MONGO_DATABASE);
 		// Establish and verify connection
 		console.log("db connected");
+		console.log(process.env.PORT);
 	} catch (error) {
 		throw Error("Could not connect to MongoDB. " + error);
 	}

@@ -1,5 +1,7 @@
 var express = require('express');
+const { db } = require('../mongo');
 var router = express.Router();
+
 
 const mockTodos = [{
 	id: "4387f4d8-aeac-4559-9f1b-3c5d537c955c",
@@ -52,11 +54,46 @@ const mockTodos = [{
 router.get('/all', function(req, res, next) {
     res.json({
         success: true,
-    list: toDos //Switch the /todos/all route to find all toDo's in the mongo database and send those in the response instead of mocktodos.
+    	list: mockTodos //Switch the /todos/all route to find all toDo's in the mongo database and send those in the response instead of mocktodos.
     });
 });
 
-router.post("/todos/create-one", async (req, res) =>{
+router.post("/create-one", async (req, res) =>{
+	try{ const requestBody = req.body
+		const todos = db.collection("todos");
+		// create a document to insert
+		requestBody.isComplete = false;
+		requestBody.creationDate = new Date();
+
+  	 	await todos.insertOne(requestBody);
+		res.json({
+			success: true,
+		})
+    } catch (error) {
+        console.error(err);
+        res.json({
+            success: false,
+            error: err.toString(),
+        });
+    }
+})
+// router.post("/todos/create-one", async (req, res) => {
+// 	const id = req.params.id;
+// 	const title = req.body.title;
+// 	const description = req.body.description;
+//  	const isComplete = req.body.isComplete;
+// 	const priority = req.body.priority;
+//  	const creationDate = new Date();
+//  	const lastModified = new Date();
+//  	const completedDate = new Date();
+// 	});
+ //doublecheck this
+
+// 	const user = await db().collection("todos").findOne({
+// 		email,
+
+
+router.post("/create-one", async (req, res) =>{
     try{
 
     } catch (error) {
@@ -68,7 +105,7 @@ router.post("/todos/create-one", async (req, res) =>{
     }
 })
 
-router.delete('/todos/delete-one/:id', function(req, res, next) {
+router.delete('/delete-one/:id', function(req, res, next) {
     res.json({
         success: true,
     delete: toDos  
