@@ -60,8 +60,7 @@ router.get('/all', function(req, res, next) {
 
 router.post("/create-one", async (req, res) =>{
 	try{ const requestBody = req.body
-		const todos = await db().collection("todos");
-		// db().collection('todos')
+		const todos = db.collection("todos");
 		// create a document to insert
 		requestBody.isComplete = false;
 		requestBody.creationDate = new Date();
@@ -71,23 +70,13 @@ router.post("/create-one", async (req, res) =>{
 			success: true,
 		})
     } catch (error) {
-        console.error(error);
+        console.error(err);
         res.json({
             success: false,
-            error: error.toString(),
+            error: err.toString(),
         });
     }
 })
-
-router.delete('/delete-one/:id', function(req, res, next) {
-    res.json({
-        success: true,
-    delete: toDos  
-    });
-});
-module.exports = router;
-
-
 // router.post("/todos/create-one", async (req, res) => {
 // 	const id = req.params.id;
 // 	const title = req.body.title;
@@ -104,14 +93,22 @@ module.exports = router;
 // 		email,
 
 
-// router.post("/create-one", async (req, res) =>{
-//     try{
+router.post("/create-one", async (req, res) =>{
+    try{
 
-//     } catch (error) {
-//         console.error(err);
-//         res.json({
-//             success: false,
-//             error: err.toString(),
-//         });
-//     }
-// })
+    } catch (error) {
+        console.error(err);
+        res.json({
+            success: false,
+            error: err.toString(),
+        });
+    }
+})
+
+router.delete('/delete-one/:id', function(req, res, next) {
+    res.json({
+        success: true,
+    delete: toDos  
+    });
+});
+module.exports = router;
